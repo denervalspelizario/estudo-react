@@ -1,0 +1,27 @@
+
+.card__container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 3rem 0;
+}
+
+
+.card{
+    border: 2px solid rgb(3, 89, 100);
+    border-radius: 0.5rem;
+    width: 250px;
+    text-align: center;
+    color: rgb(19, 121, 121);
+    background-color: rgb(5, 49, 49);
+    font-weight: bold;
+    
+    font-family: sans-serif
+
+    
+};
+
+h2 {
+    text-transform: uppercase;
+}
+

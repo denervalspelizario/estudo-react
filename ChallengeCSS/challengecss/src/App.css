@@ -1,0 +1,20 @@
+.App {
+  margin: 0 auto;
+  padding: 0;
+  font-family: 'Times New Roman', Times, serif;
+  text-align: center;
+}
+
+h1 {
+  color: rgb(5, 83, 128);
+  border: 1px solid transparent;
+  background-color: rgb(4, 53, 99);
+  font-family: sans-serif;
+  text-transform: uppercase;
+}
+
+.card__component {
+  display: flex;  
+  justify-content: space-evenly;
+
+}
