@@ -1,41 +1,6 @@
 {
   "produtcs": [
     {
-      "id": 1,
-      "name": "Camisa",
-      "price": 59.9
-    },
-    {
-      "id": 2,
-      "name": "Calça vermelha",
-      "price": 90
-    },
-    {
-      "id": 3,
-      "name": "Boné aba reta",
-      "price": 29.9
-    },
-    {
-      "name": "Calça Azul",
-      "price": "85",
-      "id": 4
-    },
-    {
-      "name": "Calça preta",
-      "price": "95",
-      "id": 5
-    },
-    {
-      "name": "Teclado",
-      "price": "110",
-      "id": 6
-    },
-    {
-      "name": "Terno",
-      "price": "200",
-      "id": 7
-    },
-    {
       "name": "cadeira",
       "price": "200",
       "id": 8
@@ -46,11 +11,6 @@
       "id": 9
     },
     {
-      "name": "mouse",
-      "price": "60",
-      "id": 10
-    },
-    {
       "name": "calca roxa",
       "price": "250",
       "id": 11
@@ -59,21 +19,6 @@
       "name": "suporte tv",
       "price": "75",
       "id": 12
-    },
-    {
-      "name": "suporte tv 2",
-      "price": "80",
-      "id": 15
-    },
-    {
-      "name": "suporte tv 3",
-      "price": "65",
-      "id": 16
-    },
-    {
-      "name": "suporte tv 4",
-      "price": "60",
-      "id": 19
     },
     {
       "name": "tv",

@@ -1,4 +1,7 @@
 1 precisa instalar pacote  com o comando "npm i json-server"
 2 precisa alterar o package.json  no depurar  e adicionar "server": "json-server --watch local/db.json"
+  esse comando watch ele vai ficar monitorando em tempo real as mudanças do arquivo db.json
+
+
 3 acessar o json comando npm run server 
 

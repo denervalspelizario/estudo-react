@@ -1,17 +1,18 @@
 import { useState, useEffect } from "react";
 
-// 4 - custom hook  
 
+ //  USEFETCH  RECEBERA DADOS DA API - CONTEM VARIAS FUNÇÕES PARA MANIPULAR OS DADOS DA API 
+ //  RESGATA OS DADOS DO DATA  - ATUALIZA O POST DE PRODUTOS DE ACORDO COM OS PRODUTOS LA DO DATA -  ALTERAR CONFIGURAÇÕES
 export const useFetch = (url) => {  // funcao que sera exportada que recebe url(api)  pra puxar os dados
 
-    const [data, setData] = useState(null)  // dados que virarao setDados  // inicialmente os dados serão nulos
+    const [data, setData] = useState(null)  // inicialmente os dados serão nulos
 
-    // 5 - refatorando o post
-    const [config, setConfig] = useState(null) // 5 -  vai configurar o post e os cabeçalhos
-    const [method, setMethod] = useState(null) // 5 - vai dizer qual o tipo de methodo vai ser usado na função GET ou POST
-    const [callFetch, setCallFetch] = useState(false) // 5 -
+    //  refatorando o post
+    const [config, setConfig] = useState(null) //  vai configurar o post e os cabeçalhos
+    const [method, setMethod] = useState(null) // vai dizer qual o tipo de methodo vai ser usado na função GET ou POST
+    const [callFetch, setCallFetch] = useState(false) // será usado para mapear o useEffect que resgata os dados atualizou lá ele indica aqui
 
-    // 6 - loading 
+    // 6 - state LOADING
     const [loading, setLoading] = useState(false); // começa nao carregando nada por isso false
 
     // 7 - tratando erros
@@ -21,18 +22,22 @@ export const useFetch = (url) => {  // funcao que sera exportada que recebe url(
     const [itemId, setItemId] = useState(null); // cfiando o estado id que vai ser usado para pegar o dado que vai ser buscado para ser deletado
 
 
-    const httpConfig = (data, method) => { // 5 - funcao para alterar as configuracoes
-        if(method === 'POST'){
+    // FUNÇÃO ALTERAR CONFIGURAÇÕES
+    const httpConfig = (data, method) => { 
+        
+        if(method === 'POST'){ // se o metodo for post 
             setConfig({
-                method,
+                method: "POST",
                 headers: {
-                    "Content-type": "application/json"
+                    "Content-type": "application/json"  // o conteudo do header será um arquivo do tipo json
                 },
-                body: JSON.stringify(data)
+                body: JSON.stringify(data) // O comando "JSON.stringify" é utilizado para converter um objeto JavaScript em uma string no formato JSON(no caso data), 
+                                           // para que possa ser usado no body do json para que posso ser adicionado no arquivo json.
             })
 
             setMethod(method);
-        } else if(method ==="DELETE"){   // 8 criando a comando DELETE de dados usando uma nova condição
+
+        } else if(method ==="DELETE"){   // criando a comando DELETE de dados usando uma nova condição
             setConfig({
                 method,
                 headers: {
@@ -40,75 +45,68 @@ export const useFetch = (url) => {  // funcao que sera exportada que recebe url(
                 },
             });
 
-            setMethod(method)
+            setMethod(method) // alterando a state method de acordo com com a requsicao pois apartir dai ele vai agora se for GET ou POST
             setItemId(data) // 8 - vai pegar o id do produto que esta na base de dados(data) 
         }
     };
 
-
+    // FUNÇÃO QUE RESGATA OS DADOS DO DATA 
     useEffect(() => {
 
-        
+        const fetchData = async () => {  // uma requisição  que chamara os dados
+            setLoading(true); // ligando loading até carregar os dados
 
-        const fetchData = async () => {  // uma requisição assincrona
+            try {  // deu certo carregou os dados   
 
-            // 6 - loading quando inica a função
-            setLoading(true);
-
-            try {  // 7 eu tento fazer ocarregamento de dados        
-
-                const res = await fetch(url)  // pega os dados url e joga na res  // 7 - adiciona o try catch  
-
-                const json = await res.json() // pega os dados no formato no caso json // 7 - adiciona o try catch  
+                const res = await fetch(url)  // pega os dados url e joga na res  
+                const json = await res.json() // pega os dados no formato no caso json   
     
-                setData(json)  // aqui jogando no estado setData od dados  // 7 - adiciona o try catch  
+                setData(json)  // jogando os dados na state data 
                 
-            } catch (error) {
+            } catch (error) { // deu erro não carregou os dados
                 console.log(error.message);
-                setError("Houve algum erro no carregamento de dados!") // 7 - se houver algum errro ele altera o estado no setError e informa a msg
+                setError("Houve algum erro no carregamento de dados!") // se houver algum errro ele altera o estado no setError e informa a msg
             }
             
-
-        // 6 - loading terminado de carregar toda a funcao agora o setLoading vira false
-        setLoading(false);     
-
+            setLoading(false);  // desligando loading depois de carregar dados 
         };
 
         fetchData(); // chama a funcao para ser executada
 
-    },[url, callFetch]) // dependencia dele a nossa url // 5 callFetch diz adicionando dados ao sistema e o callFetch traz os dados atualizados
+    },[url, callFetch]) // dependencia dele a nossa url,  callFetch traz os dados atualizados
 
-    // 5 refatorando post
 
-    useEffect(() => {  //  5 - o nome useEffect é uma convensão para ato de trazer dados
+    // FUNÇÃO QUE ATUALIZA O POST DE PRODUTOS DE ACORDO COM OS PRODUTOS LA DO DATA
+    useEffect(() => {  
 
-        const httpResquest = async () => {  // 5 - sempre que houver uma alteração na dependencia esse useEfect vai ser chamado -
-            if(method === 'POST'){ // 5 - faz a checagem se o metodo for post
+        const httpResquest = async () => {  //  sempre que houver uma alteração na dependencia esse useEfect vai ser chamado -
+            
+            if(method === 'POST'){ //  checagem se o metodo for post
 
-                let fecthOptions = [url, config]; // 5 - fazendo aray com  url e as configs pois ela é dinamica pode ser reultilizado
+                let fecthOptions = [url, config]; //  fazendo uma array com  url e as configs pois ela é dinamica pode ser reutilizado
     
-                const res = await fetch(...fecthOptions); // 5 - resquisicao
+                const res = await fetch(...fecthOptions); // fazendo a  resquisicao
     
-                const json = await res.json(); // 5 - automaticamente fazendo uma requisição de GET quando o post for concluido
+                const json = await res.json(); // tranformando res em json e jogando em const  
+     
+                setCallFetch(json);  //  Quando o post for concluido automaticamente fazendo uma requisição de GET
     
-                setCallFetch(json);
-    
-            } else if (method === "DELETE"){  // 8 criando method de exclusão
+            } else if (method === "DELETE"){  // 8 criando method exclusão de dado
 
-                const deleteUrl = `${url}/${itemId}`
+                const deleteUrl = `${url}/${itemId}` // pega url + id do produto joha na const
 
-                const res = await fetch(deleteUrl, config)
+                const res = await fetch(deleteUrl, config)  //item que sera excluso + tipo de post que no caso é delete
 
-                const json = await res.json()
+                const json = await res.json() // transforma em json joga na const
 
-                setCallFetch(json)
+                setCallFetch(json) // atualiza o state com esta json do item que será excluido
 
             }
         }
 
         httpResquest(); // chamando a funcao
 
-    }, [config, method, url]) // 5 config method e url sendo mapeados, quando houver alteração na config o useEffect é chamado
+    }, [config, method, url]) // config method e url sendo mapeados, quando houver alteração na config o useEffect é chamado
  
     return { data, httpConfig, loading, error }; // retorna data que é a base dos dados // 5 exportando o httpConfig // 6 exportando o loading tb //7 exportando error kkk
 
