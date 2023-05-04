@@ -1,10 +1,16 @@
-import { Link, useParams } from "react-router-dom"   // 4 - traz os parametros da url por exemplo id ou name
-import { useFetch } from "../hooks/useFetch"  // 5 - importando o useFetch
+import { Link, useParams } from "react-router-dom"   // traz os parametros da url por exemplo id ou name
+import { useFetch } from "../hooks/useFetch"  //  importando o useFetch
+
+/*
+  O useParams é um hook do React que faz parte da biblioteca react-router-dom. 
+  Ele permite que você acesse e extraia os parâmetros de uma URL em um componente funcional do React.
+*/
 
 const Product = () => {
 
-    // 4 - rota dinamica
-    const { id } = useParams()  // 4 recebendo parametro de id  - obs ta recendo o id porque la app.js a route é products/id
+    //  rota dinamica
+    const { id } = useParams()  // useParams traz o id do produto - obs ta recebendo o id porque la app.js a route é products/id
+    console.log(id)
 
     // 5 - carregamento dado individual
     const url = "http://localhost:3000/products/" + id;   // url da api para fazer requisição dos dados da data ** o run server tem que estar ativo senao nao funciona atentar a url***
