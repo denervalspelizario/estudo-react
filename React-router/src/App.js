@@ -35,7 +35,7 @@ function App() {
           <Route path="/products/:id/info" element={<Info />} /> {/* path o endereço na url e o element(a rota verdadeiro)  que leva ao component Info*/}
         
           {/* 9 - Search*/}
-          <Route path='/search'  element={<Search />}/> {/* 9 - path o endereço na url e o element(a rota verdadeiro)  que leva ao page Search*/}
+          <Route path='/search'  element={<Search />}/> {/*  path o endereço na url e o element(a rota verdadeiro)  que leva ao page Search*/}
         
           {/* 10 - Redirect - maneira de redirecionamento se caso necessitar fazer durante o projeto */}
           <Route path='/company' element={<Navigate to='/about'/>} /> {/* 10 - company que é arota antiga - o to=''  é para onde vai direcionar no caso about */}
