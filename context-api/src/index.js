@@ -4,13 +4,18 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
-import { CounterContextProvider } from './context/CounterContext';  // 2 importa-se o Contexto
+import { CounterContextProvider } from './context/CounterContext';  // importando o Contexto
+import { TitleColorContextProvider } from './context/TitleColorContext'
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <CounterContextProvider>  {/* 2 o App colca-se envolvido no context */}
-      <App />
+    <CounterContextProvider>  {/* Contexto sera envolto de app para agente poder usar contexto em todos as paginas do app */}
+      
+      <TitleColorContextProvider> {/* evolvendo app com um novo context*/}
+        <App />
+      </TitleColorContextProvider>
+      
     </CounterContextProvider>
   </React.StrictMode>
 );
