@@ -1,12 +1,34 @@
 import { useState } from "react"
 
+interface InfoAlunoProps{  // criando uma interface com dados nome e idade
+  nome: string;
+  idade: string;
+}
+
+
 export default function App(){
   const [input, setInput] = useState("") // state iniciando vazio
-  const [aluno, setAluno] = useState("Sem nenhum nome") // state iniciando com string
   const [idade, setIdade] = useState("") // state iniciando vazio
+  const [contador, setContador] = useState(0)
+  
 
-  function mostrarAluno(){
-    setAluno(input)
+  const [infoAluno, setInfoAluno] = useState<InfoAlunoProps>() // tipei essa state que recebe InfoAlunoProps ou seja ele TEM que receber orbigatoriamente
+                                                               // um name e uma idade ou seja essa state é um objeto com 2 dados 
+
+  function mostrarAluno(){ // função que ao clicar la no btn pega-se dados dos inputs que estao nas states input e idade e adicona na state
+                           // infoAluno que é um objeto que recebe tanto nome quanto idade atravez da interafce InfoAlunoProps
+    setInfoAluno({
+      nome: input,
+      idade: idade,
+    })
+  }
+
+  function adicionar(){
+    setContador(valorAtual => valorAtual + 1)
+  }
+
+  function retirar(){
+    setContador(valorAtual => valorAtual - 1)
   }
 
 
@@ -36,8 +58,11 @@ export default function App(){
 
       <hr />
 
-      <h3>Bem vindo: {aluno}</h3>
-      <h3>Sua idade: {idade}</h3>
+      <h3>Bem vindo: {infoAluno?.nome}</h3>
+      <h3>Sua idade: {infoAluno?.idade}</h3>
+
+
+      <button onClick={adicionar}>+</button> {contador} <button onClick={retirar}>-</button>
     </div>
   )
 }
