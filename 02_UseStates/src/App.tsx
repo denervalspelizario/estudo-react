@@ -23,11 +23,16 @@ export default function App(){
     })
   }
 
-  function adicionar(){
+  function adicionar(){ // função que adiciona 1 ao state
     setContador(valorAtual => valorAtual + 1)
   }
 
-  function retirar(){
+  function retirar(){ // função que diminui 1 ao state
+
+    if(contador === 0){ // impedindo que fique negativo
+      return
+    }
+
     setContador(valorAtual => valorAtual - 1)
   }
 
