@@ -4,17 +4,13 @@ import { useState } from "react"
 export default function App(){
 
   const [ input, setInput] = useState('')
-  const [ tasks, setTasks] = useState([ // state que é um array
-    'Estudar react com typescript',
-    'Comprar pao meio dia',
-    'Estudar ingles a noite'
-  ])
+  const [ tasks, setTasks] = useState<string[]>([]) // state que é uma array de string lembre-se string[] estou tipando como array de string
 
 
   const [editTask, setEditTask] = useState({ // state que é um array
     
     enable: false, // dado que vai indicar se vai editar ou não estando true sinaliza uma edicao 
-    tasks: '' // tarefa que inicia vazia
+    task: '' // tarefa que inicia vazia
   
   })
 
@@ -29,9 +25,12 @@ export default function App(){
 
     if(editTask.enable){ // se enable estiver true siginifica que esta editando uma task
       
-      handleSaveEdit();
+      handleSaveEdit(); // então chama a funcao para editar o edit
       return
     } 
+
+
+
 
 
     setTasks(tarefas => [...tarefas, input]) // estou pegando atravez do spread operator(...tarefas) todos os dados que já tem e adicionando mais uma tarefa 
@@ -60,14 +59,41 @@ export default function App(){
     
     setEditTask({
       enable: true, // sinalizando que estamos editando
-      tasks: item   // tasks recebe o item que foi clicado
+      task: item   // tasks recebe o item que foi clicado
     })
                                                           
   }
 
   function handleSaveEdit(){
-    alert('Esta editando uma tarefa')
-  }
+    
+    const findIndexTask = tasks.findIndex(task => task === editTask.task) // jogando em find a posicao do item que sera editado
+                                                                          // tasks.findIndex = ou seja usando a funcao nativa do js para encontra posicao  na state tasks   
+                                                                          // task === editTask.task = indicar a mesma task da state task e da editTask 
+
+    const allTasks = [...tasks] // joguei a state tasks na variavel
+
+    allTasks[findIndexTask] = input // joguei o dado do input NA POSIÇÂO  do item que sera editado
+
+    setTasks(allTasks)
+
+    /* RESUMINDO O CODIGO  
+      1 - ENCONTRO A POSICAO DO ITEM QUE SERA EDITADO ATRAVEZ DO FINDiNDEX  
+      2 - JOGO A ARRAY COM TODOS OS DADOS EM 1 CONSTANTE
+      3 - JOGO O DADO DO INPUT(DADO QUE EU EDITEI) NA MESMA POSICAO DO DADO QUE EU ESCOLHI EDITAR 
+      4 - E DEPOIS JOGO ESSA CONSTANTE JA COM OS DADOS ATUALIZADO NA STATE TASK  
+       
+    */
+
+    setEditTask({
+      
+      enable: false, 
+      task: '' 
+      
+    })
+
+    setInput('')
+                        
+  }             
 
 
 
@@ -81,7 +107,9 @@ export default function App(){
         value={input}  // input recebe valor de state input
         onChange={(event) => setInput(event.target.value)} // dados digitados no input serão adicionados no state input
       />
-      <button onClick={handleRegister}>Adicionar tarefa</button>
+      <button onClick={handleRegister}>
+        {editTask.enable ? 'Atualizar tarefa' : 'Adicionar tarefa'} 
+      </button>
       <hr />
 
 
