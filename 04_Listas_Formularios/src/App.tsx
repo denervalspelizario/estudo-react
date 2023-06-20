@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 
 
 export default function App(){
@@ -14,6 +14,20 @@ export default function App(){
   
   })
 
+  
+
+  useEffect(() => {
+    const tarefasSalvas = localStorage.getItem('@cursoreact') // estou salvando os dados salvos(as tarefas) na variavel tarefasSalvas
+
+    if(tarefasSalvas){ // se tiver alguma coisa em tarefasSalvas então
+
+      setTasks(JSON.parse(tarefasSalvas))  // adicono essas tarefas salvas na state tasks
+                                           // lembrando que elas foram slavas como strang então agora eu tenho que tranforma-las em array usando o JSON.parse  
+    }
+
+  }, [])
+
+
   // FUNCAO DE REGISTRAR UMA TAREFA 
   function handleRegister(){
     
@@ -22,22 +36,25 @@ export default function App(){
       return // return para parar a execução
     }
 
-
     if(editTask.enable){ // se enable estiver true siginifica que esta editando uma task
       
       handleSaveEdit(); // então chama a funcao para editar o edit
       return
     } 
 
-
-
-
-
     setTasks(tarefas => [...tarefas, input]) // estou pegando atravez do spread operator(...tarefas) todos os dados que já tem e adicionando mais uma tarefa 
                                              // ou seja ...tarefas(tarefas antigas) + input(tarefa adicionada) e jogando em tarefas e depois na state tasks
                                              // no final tasks vai ter tarefas antigas + a nova tarefa 
 
-    setInput('') // zerando input após adicionar a tarefa                                         
+    setInput('') // zerando input após adicionar a tarefa      
+    
+    // sanvando as tasks adicionandas
+    localStorage.setItem('@cursoreact', JSON.stringify([...tasks, input])) 
+    /* atravez do localStorage estamos salvando todas as tarefas na state item para que eles ficam slavam mesmo que de f5 na pagina
+       @cursoreact é a chave desse localstorage
+       localstorage só salva em string e como tasks estao como array usamos JSON.stringify para tranformar elas em string
+       lembrando que ...tasks são todas as tarefas antigas e input é a nova tarefa adicionada   
+    */
   }
 
 
@@ -49,7 +66,15 @@ export default function App(){
                                                             // o item do parametro no caso o item clicado
 
     setTasks(removeTask) //depois que removeTask recebe todos os dados MENOS o dado cliclado 
-                         // então state task recebe removeTask                                                         
+                         // então state task recebe removeTask        
+                         
+    // salvando as tasks deletadas
+    localStorage.setItem('@cursoreact', JSON.stringify(removeTask)) 
+    /* atravez do localStorage estamos salvando todas as tarefas na state item para que eles ficam slavam mesmo que de f5 na pagina
+       @cursoreact é a chave desse localstorage
+       localstorage só salva em string e como removeTask estao como array usamos JSON.stringify para tranformar elas em string
+       lembrando que ...removeTask são todas as tarefas deletadas   
+    */                     
   }
 
   // FUNCAO EDITAR TAREFA
@@ -83,7 +108,6 @@ export default function App(){
       4 - E DEPOIS JOGO ESSA CONSTANTE JA COM OS DADOS ATUALIZADO NA STATE TASK  
        
     */
-
     setEditTask({
       
       enable: false, 
@@ -92,6 +116,14 @@ export default function App(){
     })
 
     setInput('')
+
+    // salvando as tasks editadas
+    localStorage.setItem('@cursoreact', JSON.stringify(allTasks)) 
+    /* atravez do localStorage estamos salvando todas as tarefas na state item para que eles ficam slavam mesmo que de f5 na pagina
+       @cursoreact é a chave desse localstorage
+       localstorage só salva em string e como allTasks estao como array usamos JSON.stringify para tranformar elas em string
+       lembrando que ... allTasks são as tarefas editadas 
+    */
                         
   }             
 
