@@ -1,10 +1,13 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 
 
 export default function App(){
 
+  const inputRef = useRef<HTMLInputElement>(null) // se inicia como vazio - como estmaos usando typescript temos que referenciar
+  const firstRender = useRef(true);
   const [ input, setInput] = useState('')
   const [ tasks, setTasks] = useState<string[]>([]) // state que é uma array de string lembre-se string[] estou tipando como array de string
+
 
 
   const [editTask, setEditTask] = useState({ // state que é um array
@@ -27,6 +30,24 @@ export default function App(){
 
   }, [])
 
+  useEffect(()=> {
+
+    if(firstRender.current){ // se fisrtRender estiver true
+
+      firstRender.current = false; // trnasforma em false para evitar a primeira renderizada
+      return
+
+    }
+
+    localStorage.setItem('@cursoreact', JSON.stringify(tasks))
+    /* atravez do localStorage estamos salvando todas as tarefas na state item para que eles ficam slavam mesmo que de f5 na pagina
+       @cursoreact é a chave desse localstorage
+       localstorage só salva em string e como tasks estao como array usamos JSON.stringify para tranformar elas em string
+       lembrando que ...tasks são todas as tarefas antigas e input é a nova tarefa adicionada   
+    */
+
+  },[tasks]) // toda vez que a state tasks mudar
+
 
   // FUNCAO DE REGISTRAR UMA TAREFA 
   function handleRegister(){
@@ -48,13 +69,8 @@ export default function App(){
 
     setInput('') // zerando input após adicionar a tarefa      
     
-    // sanvando as tasks adicionandas
-    localStorage.setItem('@cursoreact', JSON.stringify([...tasks, input])) 
-    /* atravez do localStorage estamos salvando todas as tarefas na state item para que eles ficam slavam mesmo que de f5 na pagina
-       @cursoreact é a chave desse localstorage
-       localstorage só salva em string e como tasks estao como array usamos JSON.stringify para tranformar elas em string
-       lembrando que ...tasks são todas as tarefas antigas e input é a nova tarefa adicionada   
-    */
+   
+    
   }
 
 
@@ -68,17 +84,13 @@ export default function App(){
     setTasks(removeTask) //depois que removeTask recebe todos os dados MENOS o dado cliclado 
                          // então state task recebe removeTask        
                          
-    // salvando as tasks deletadas
-    localStorage.setItem('@cursoreact', JSON.stringify(removeTask)) 
-    /* atravez do localStorage estamos salvando todas as tarefas na state item para que eles ficam slavam mesmo que de f5 na pagina
-       @cursoreact é a chave desse localstorage
-       localstorage só salva em string e como removeTask estao como array usamos JSON.stringify para tranformar elas em string
-       lembrando que ...removeTask são todas as tarefas deletadas   
-    */                     
+                        
   }
 
   // FUNCAO EDITAR TAREFA
   function handleEdit(item: string){
+
+    inputRef.current?.focus() //quando usuario clicar la no btn edit que chama essa funcao o input sera dado focu
     
     setInput(item) // clicou la no btn adiciona o item no input
     
@@ -116,14 +128,6 @@ export default function App(){
     })
 
     setInput('')
-
-    // salvando as tasks editadas
-    localStorage.setItem('@cursoreact', JSON.stringify(allTasks)) 
-    /* atravez do localStorage estamos salvando todas as tarefas na state item para que eles ficam slavam mesmo que de f5 na pagina
-       @cursoreact é a chave desse localstorage
-       localstorage só salva em string e como allTasks estao como array usamos JSON.stringify para tranformar elas em string
-       lembrando que ... allTasks são as tarefas editadas 
-    */
                         
   }             
 
@@ -138,6 +142,7 @@ export default function App(){
         placeholder="Digite o nome da tarefa"  
         value={input}  // input recebe valor de state input
         onChange={(event) => setInput(event.target.value)} // dados digitados no input serão adicionados no state input
+        ref={inputRef} // estou referenciando este input
       />
       <button onClick={handleRegister}>
         {editTask.enable ? 'Atualizar tarefa' : 'Adicionar tarefa'} 
