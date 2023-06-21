@@ -1,5 +1,9 @@
-import { useState, useEffect, useRef } from "react"
+import { useState, useEffect, useRef, useMemo, useCallback } from "react" // useMemo é uma função no React que permite otimizar o desempenho de componentes, memorizando valores calculados
+/*
+  O hook useCallback é usado no React para memorizar uma versão "memoizada" de uma função. Ele é útil quando você precisa passar funções para componentes filho, 
+  garantindo que essas funções não sejam recriadas a cada renderização do componente pai, a menos que suas dependências tenham sido alteradas.
 
+*/
 
 export default function App(){
 
@@ -18,7 +22,7 @@ export default function App(){
   })
 
   
-
+  // funcao executada quando inicia
   useEffect(() => {
     const tarefasSalvas = localStorage.getItem('@cursoreact') // estou salvando os dados salvos(as tarefas) na variavel tarefasSalvas
 
@@ -30,9 +34,11 @@ export default function App(){
 
   }, [])
 
+
+  // funcao executada quando altera a tarefa ou seja toda vez que adicionar uma tarefa ou editar essa funcao será chamada
   useEffect(()=> {
 
-    if(firstRender.current){ // se fisrtRender estiver true
+    if(firstRender.current){ // se fisrtRender estiver true ou seja é aprimeira vez que ta abrindo o componente
 
       firstRender.current = false; // trnasforma em false para evitar a primeira renderizada
       return
@@ -43,13 +49,37 @@ export default function App(){
     /* atravez do localStorage estamos salvando todas as tarefas na state item para que eles ficam slavam mesmo que de f5 na pagina
        @cursoreact é a chave desse localstorage
        localstorage só salva em string e como tasks estao como array usamos JSON.stringify para tranformar elas em string
-       lembrando que ...tasks são todas as tarefas antigas e input é a nova tarefa adicionada   
+       lembrando que ...tasks são todas as tarefas 
     */
 
   },[tasks]) // toda vez que a state tasks mudar
 
 
-  // FUNCAO DE REGISTRAR UMA TAREFA 
+
+  const handleRegister = useCallback(() => {
+
+    if(!input){ // se input estiver false ou seja nda foi adicionado a ele então
+      alert("Preencha todos os dados") // de o alerta
+      return // return para parar a execução
+    }
+
+    if(editTask.enable){ // se enable estiver true siginifica que esta editando uma task
+      
+      handleSaveEdit(); // então chama a funcao para editar o edit
+      return
+    } 
+
+    setTasks(tarefas => [...tarefas, input]) // estou pegando atravez do spread operator(...tarefas) todos os dados que já tem e adicionando mais uma tarefa 
+                                             // ou seja ...tarefas(tarefas antigas) + input(tarefa adicionada) e jogando em tarefas e depois na state tasks
+                                             // no final tasks vai ter tarefas antigas + a nova tarefa 
+
+    setInput('') // zerando input após adicionar a tarefa      
+    
+
+  }, [input, tasks]) // quanto input OU tasks mudarem valor handleRegister será chamadasemples assim
+
+
+  /* FUNCAO DE REGISTRAR UMA TAREFA  observar esta funcao funciona mas foi desativada para uso de callback acima
   function handleRegister(){
     
     if(!input){ // se input estiver false ou seja nda foi adicionado a ele então
@@ -71,7 +101,7 @@ export default function App(){
     
    
     
-  }
+  }*/
 
 
 
@@ -127,10 +157,15 @@ export default function App(){
       
     })
 
-    setInput('')
-                        
+    setInput('') // limpando o input                        
   }             
 
+  // FUNCAO COM A QTD DE TAREFAS DENTRO DA STATE TASKS
+  const totalTarefas = useMemo(() => {
+
+    return tasks.length // retornando apenas aquantidade tarefas na state tasks
+
+  }, [tasks]) // ou seja toda vez que alterar a state tasks a const totalTarefas será chamada e atualizara qtd de tarefas
 
 
 
@@ -147,8 +182,12 @@ export default function App(){
       <button onClick={handleRegister}>
         {editTask.enable ? 'Atualizar tarefa' : 'Adicionar tarefa'} 
       </button>
+      
       <hr />
 
+      <strong>Você tem {totalTarefas} tarefas!</strong>
+      <br />
+      <br />
 
       {tasks.map((item, index) => ( // map faz percorrer todos os dados de task
                                     // item é o dado e index é a posicao 
