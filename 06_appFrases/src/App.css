@@ -29,6 +29,7 @@
   display: flex;
   gap: 14px;
   margin-bottom: 34px;
+  width: 80vw;
 }
 
 .categoria-button {
@@ -38,7 +39,7 @@
 }
 
 .button-frase {
-  background-color: #1fa4db;
+  background-color: #B22222;
   border: 0;
   border-radius: 4px;
   padding: 8px 16px;
@@ -54,7 +55,7 @@
   padding: 14px 22px;
   margin: 24px 0 16px 0;
   line-height: 150%;
-  color: #dd7b22;
+  color: #B22222;
   font-style: italic;
   font-size: 18px;
 }

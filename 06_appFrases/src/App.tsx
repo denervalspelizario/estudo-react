@@ -44,7 +44,7 @@ function App() {
               className='categoria-button'
               style={{
                 borderWidth: item.nome === frasesCharlieBrown[categoriaSelecionada].nome ? 2 : 0, // se item.nome for igual a categoriaSelecionada.nome a grossura da borda sera 2 senao 0 
-                borderColor: '#1fa4db' // sendo true a cor da borda tb será azul
+                borderColor: '#B22222' // sendo true a cor da borda tb será azul
               }}
               onClick={ () => alterarCategoria(index)} // como eu vou usar a posicao para alterar a posicao eu preciso do parametro index para faze a troca 
             >
