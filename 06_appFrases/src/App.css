@@ -15,8 +15,9 @@
   padding-top: 120px;
 }
 
-.logo{
+.logoImg{
   max-width: 350px;
+  border-radius: 60%;
 }
 
 .title{
