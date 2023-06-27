@@ -10,6 +10,8 @@ export default function Home(){
       <br />
 
       <Link to='/sobre'>Sobre</Link>
+      <br />
+      <Link to='/contato'>Contato</Link>
     </div>
   )
 }
